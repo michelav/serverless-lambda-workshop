@@ -1,28 +1,73 @@
 import json
+import logging
 
-def hello(event, context):
-    """Return a personalized greeting.
+def helloPath(event, context):
+    """Parses a pathParam parameter from URL path
 
-    GET /hello?name={name}
+    GET /hello/{pathParam}
     """
 
-    # TODO Implement extracting the 'name' query parameter
-    # See https://serverless.com/framework/docs/providers/aws/events/apigateway#example-lambda-proxy-event-default
-    name = "JavaZone"
-
-    # TODO Extract name from path parameter instead of query parameter
-    # See https://serverless.com/framework/docs/providers/aws/events/apigateway/#request-parameters
+    name = event['pathParameters']['pathParam']
 
     # TODO Handle URL encoded characters
 
     response = {
-        "message": f"Hello, {name}!"
+        "message": f"Hello from HelloPath Function: {name}"
     }
 
-    # TODO Return correct content type
     return {
         "statusCode": 200,
         "body": json.dumps(response),
+         "headers": {
+            "Content-Type": "application/json"
+        }
     }
 
-# TODO Implement handler for POST method calls
+def helloQuery(event, context):
+    """Parses a variable qParam from Query String
+
+    GET /hello?q={qParam}
+    """
+
+    name = event['queryStringParameters']['qParam']
+
+    # TODO Handle URL encoded characters
+
+    response = {
+        "message": f"Hello {name} from HelloQuery Function!"
+    }
+
+    return {
+        "statusCode": 200,
+        "body": json.dumps(response),
+         "headers": {
+            "Content-Type": "application/json"
+        }
+    }
+
+def helloPost(event, context):
+    """Handles a POST JSON message containing a name attribute
+
+    POST /hello_post
+    """
+
+    data = json.loads(event['body'])
+    if 'name' not in data:
+        logging.error("Could not find name variable in post msg")
+        raise Exception("Couldn't find name variable.")
+
+    name = data['name']
+
+    # TODO Handle URL encoded characters
+
+    response = {
+        "message": f"Hello {name} from HelloPost Function!"
+    }
+
+    return {
+        "statusCode": 200,
+        "body": json.dumps(response),
+         "headers": {
+            "Content-Type": "application/json"
+        }
+    }

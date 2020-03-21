@@ -11,13 +11,30 @@ provider:
   runtime: python3.7
 
 functions:
-  hello:
-    handler: handler.hello
+  helloPath:
+    handler: handler.helloPath
     events:
       - http:
           # TODO Change to use path parameter
-          path: hello
+          # DONE
+          path: hello/{pathParam}
           method: get
+          request:
+            parameters:
+              paths:
+                pathParam: true
+  helloQuery:
+    handler: handler.helloQuery
+    events:
+      - http:
+          path: helloq
+          method: get
+  helloPost:
+    handler: handler.helloPost
+    events:
+      - http:
+          path: hello_post
+          method: post                
   # TODO Set up the new function here to handle HTTP POST event
 
 plugins:

@@ -12,6 +12,11 @@ definition:
       Type: Task
       Resource:
         Fn::GetAtt: [validateTemperature, Arn]
+      Catch:
+        - ErrorEquals: ["States.TaskFailed"]
+          Next: ValueErrorFallback
+        - ErrorEquals: ["States.ALL"]
+          Next: ValueErrorFallback
       Next: EnrichLocation
 
       # TODO Catch errors and transfer to Fail state
@@ -22,6 +27,9 @@ definition:
       Resource:
         Fn::GetAtt: [enrichLocation, Arn]
       End: True
+    ValueErrorFallback:
+      Type: Fail
+      Cause: "Invalid Value"
 
     # TODO Add a Fail state to handle invalid temperatures
     # See https://docs.aws.amazon.com/step-functions/latest/dg/amazon-states-language-fail-state.html

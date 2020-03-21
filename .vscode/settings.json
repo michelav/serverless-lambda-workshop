@@ -1,0 +1,7 @@
+{
+    "python.pythonPath": "/home/michel/apps/miniconda3/envs/sls-lambda/bin/python",
+    "cSpell.words": [
+        "boto",
+        "dynamodb"
+    ]
+}

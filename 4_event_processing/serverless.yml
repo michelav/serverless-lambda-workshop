@@ -23,9 +23,16 @@ functions:
       - sqs: arn:aws:sqs:us-east-1:000000000000:my-queue
 
   # TODO Define handler function and event binding for SNS topic 'my-topic'
-
+  handle_sns:
+    handler: handler.handle_sns
+    events:
+      - sns: my-topic
+  
   # TODO Define handler function and event binding for Kinesis stream 'my-stream'
-
+  handle_kinesis:
+     handler: handler.handle_kinesis
+     events:
+      - stream: arn:aws:kinesis:us-east-1:000000000000:stream/my-stream
 resources:
   #
   # Create infrastructure resources used by the Lambda function.
